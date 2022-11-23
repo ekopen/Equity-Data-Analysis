@@ -74,20 +74,20 @@ def anti_trend_strat(stock_df, stocktickers, investment):
 
 
 
-healthcare_stock_tickers = ['UNH', 'CI', 'ELV', 'CNC', 'HUM']
+portfolio_stock_tickers = ['JNJ', 'LLY', 'PFE', 'ABBV', 'MRK']
 # healthcare_stock_names = ["United Health", "Cigna", "Elevance", "Centene", "Humana"]
-start = '2010-01-01'
+start = '2015-01-01'
 end = '2019-12-31'
 starting_amount = 1000
 
 
-portfolio_returns = daily_returns(healthcare_stock_tickers, start, end)
+portfolio_returns = daily_returns(portfolio_stock_tickers, start, end)
 portfolio_returns.to_pickle("./daily_returns.pkl")
 print(portfolio_returns)
 
-long_portfolio = long_strat(pd.read_pickle("./daily_returns.pkl"), healthcare_stock_tickers, starting_amount).sum(axis=1)
-positive_trend_portfolio = positive_trend_strat(pd.read_pickle("./daily_returns.pkl"), healthcare_stock_tickers, starting_amount).sum(axis=1)
-anti_trend_portfolio = anti_trend_strat(pd.read_pickle("./daily_returns.pkl"), healthcare_stock_tickers, starting_amount).sum(axis=1)
+long_portfolio = long_strat(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers, starting_amount).sum(axis=1)
+positive_trend_portfolio = positive_trend_strat(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers, starting_amount).sum(axis=1)
+anti_trend_portfolio = anti_trend_strat(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers, starting_amount).sum(axis=1)
 
 portfolios = [long_portfolio, positive_trend_portfolio, anti_trend_portfolio]
 portfolio_combos = pd.concat(portfolios, keys=["Long Only", "Trend Follow", "Trend Reverse"], axis = 1, join="inner")
