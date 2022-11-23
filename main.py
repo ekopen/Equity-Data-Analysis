@@ -50,7 +50,7 @@ def calc_portfolio_perfomance(stock_df, stocktickers, investment, investment_str
 
 # initialize the portfolio
 portfolio_stock_tickers = ['JNJ', 'LLY', 'PFE', 'ABBV', 'MRK']
-start = '2005-01-01'
+start = '2010-01-01'
 end = '2019-12-31'
 # maybe clarify this is per stock, create ways to weigh it
 starting_amount = 1000
@@ -61,16 +61,13 @@ portfolio_returns.to_pickle("./daily_returns.pkl")
 print(portfolio_returns)
 
 # create data frames for the different strategies and return a sum column
-# this could be looped for better efficiency
-long_portfolio = calc_portfolio_perfomance(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers,
-                                                 starting_amount, "long_strat").sum(axis=1)
-positive_trend_portfolio = calc_portfolio_perfomance(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers,
-                                                starting_amount, "positive_trend_strat").sum(axis=1)
-anti_trend_portfolio = calc_portfolio_perfomance(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers,
-                                                    starting_amount, "anti_trend_strat").sum(axis=1)
+trading_strats = ["long_strat", "positive_trend_strat", "anti_trend_strat"]
+portfolios = []
+for strat in trading_strats:
+    portfolios.append(calc_portfolio_perfomance(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers,
+                                                 starting_amount, strat).sum(axis=1))
 
 # combine into a single data frame and plot it
-portfolios = [long_portfolio, positive_trend_portfolio, anti_trend_portfolio]
 portfolio_combos = pd.concat(portfolios, keys=["Long Only", "Trend Follow", "Trend Reverse"], axis = 1, join="inner")
 print(portfolio_combos)
 portfolio_combos.plot()
