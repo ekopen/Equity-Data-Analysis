@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 
 def stock_data(stockticker, start_date, end_date):
-    """initialize the stock data from Yahoo Finance
-    """
+    #initialize the stock data from Yahoo Finance
+
     stock_dict = {}
     stock_df = pd.DataFrame(yf.download(stockticker, start_date, end_date))
     stock_df['daily_return'] = np.log(stock_df['Adj Close'] / stock_df['Adj Close'].shift(1))
