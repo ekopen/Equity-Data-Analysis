@@ -49,7 +49,7 @@ def calc_portfolio_perfomance(stock_df, stocktickers, investment, investment_str
     return pd.DataFrame(stock_dict)
 
 # initialize the portfolio
-portfolio_stock_tickers = ['JNJ', 'LLY', 'PFE', 'ABBV', 'MRK']
+portfolio_stock_tickers = ['JNJ', 'LLY', 'PFE', 'MRK']
 start = '2015-01-01'
 end = '2019-12-31'
 # maybe clarify this is per stock, create ways to weigh it
@@ -61,8 +61,7 @@ portfolio_returns.to_pickle("./daily_returns.pkl")
 print(portfolio_returns)
 
 # create data frames for the different strategies and return a sum column
-trading_strats = ["long_strat", "positive_trend_strat", "anti_trend_strat",
-                  "weekly_trend_follow",]
+trading_strats = ["long_strat", "positive_trend_strat", "anti_trend_strat"]
 portfolios = []
 for strat in trading_strats:
     portfolios.append(calc_portfolio_perfomance(pd.read_pickle("./daily_returns.pkl"), portfolio_stock_tickers,
