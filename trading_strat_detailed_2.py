@@ -4,6 +4,8 @@ from numpy import mean
 import matplotlib.pyplot as plt
 import yfinance as yf
 
+pd.set_option('display.max_columns',10)
+
 ticker = 'SPY'
 data_start = '2000-01-01'
 #start date for pulling all stock data
@@ -21,25 +23,27 @@ def stock_data_all(stockticker, start_date, end_date):
 def stock_data_analysis(stock_df, running_returns):
     #append columns that contain different data useful for analysis
     stock_df['daily_return'] = np.log(stock_df['Adj Close'] / stock_df['Adj Close'].shift(1))
-    for x in running_returns:
+    daily_return_array = stock_df['daily_return'].to_numpy()
+    for return_parameter in running_returns:
         running_returns_series = []
-        for days in stock_df['daily_return']:
-            #work on getting this to return a series with running average returns
-            print(1)
+        for day in range(len(daily_return_array)):
+            if day<return_parameter:
+                running_returns_series.append(0)
+            else:
+                running_returns_series.append(np.mean(daily_return_array[(day-return_parameter):day]))
+        stock_df[return_parameter] = running_returns_series
     return stock_df
 
-def stock_data_in_range(stock_df, start):
-    #append the dataframe to only include relevant dates for analysis
-    #these locs are unneeded. not sure why
+def filter_stock_analysis(stock_df, start):
+    stock_df = stock_df.drop(columns=['Open', 'High','Low','Close','Volume'])
     indexnum = stock_df.loc[stock_df['Date'] == start].index.values
     return stock_df.loc[int(indexnum):]
 
-
-
-
 hist_data = stock_data_all(ticker, data_start, end)
 hist_data_analysis = stock_data_analysis(hist_data, running_return_days)
-print(hist_data_analysis)
+data_analysis_filtered = filter_stock_analysis(hist_data_analysis, analysis_start)
+
+print(data_analysis_filtered)
 
 
 # stock_data = stock_data_in_range(hist_data, analysis_start)
