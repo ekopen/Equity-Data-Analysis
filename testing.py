@@ -3,10 +3,10 @@
 import numpy as np
 import pandas as pd
 
-df = pd.DataFrame({"A": [8, 2, 6, 4],
-                   "B": [5, 6, 7, 8]})
+df = pd.DataFrame({4: [8, 2, 6, 4],
+                   5: [5, 6, 7, 8]})
 
-df_array = df['A'].to_numpy()
+test_array = [4,5]
+for i in test_array:
+    print(df[i][1])
 
-
-print(np.mean(df_array[0:2]))
