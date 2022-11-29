@@ -88,6 +88,7 @@ hist_data_analysis = stock_analysis(hist_data, running_return_spans)
 data_analysis_filtered = stock_analysis_filtered(hist_data_analysis, analysis_start)
 data_analysis_filtered.to_pickle("./stock_data.pkl")
 
-portfolio_test = calc_pf_performance(pd.read_pickle("./stock_data.pkl"),portfolio_amt,running_return_spans,strategies)
-print(portfolio_test)
+portfolio_data = calc_pf_performance(pd.read_pickle("./stock_data.pkl"),portfolio_amt,running_return_spans,strategies)
+portfolio_data_filtered = portfolio_data.drop(columns=['Date', 'Adj Close','daily_return',2,5,10,20])
+print(portfolio_data_filtered)
 
