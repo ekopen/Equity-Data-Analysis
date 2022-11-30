@@ -11,8 +11,8 @@ data_start = '2000-01-03'
 #start date for pulling all stock data
 analysis_start = '2010-01-04'
 #start date for the date subset for analysis
-end = '2015-12-31'
-running_return_spans = [2,5,10,20]
+end = '2012-12-31'
+running_return_spans = [1,2,5,10,20]
 #day spans of average returns in the analysis function
 portfolio_amt = 1000
 strategies = ['Long', 'Trend_Follow', 'Trend_Reverse']
@@ -78,7 +78,7 @@ def calc_pf_performance(stock_df, portfolio_amt, running_return_spans, strategie
                     portfolio_series.append(running_portfolio_amt)
                 stock_df[str(return_span) + ' ' + strat] = portfolio_series
 
-    return stock_df
+    return stock_df.drop(columns=['index','Adj Close','daily_return',1,2,5,10,20])
 
 
 
@@ -89,6 +89,9 @@ data_analysis_filtered = stock_analysis_filtered(hist_data_analysis, analysis_st
 data_analysis_filtered.to_pickle("./stock_data.pkl")
 
 portfolio_data = calc_pf_performance(pd.read_pickle("./stock_data.pkl"),portfolio_amt,running_return_spans,strategies)
-portfolio_data_filtered = portfolio_data.drop(columns=['Date', 'Adj Close','daily_return',2,5,10,20])
-print(portfolio_data_filtered)
+print(portfolio_data)
+
+portfolio_data.plot(x = 'Date')
+plt.show()
+
 
