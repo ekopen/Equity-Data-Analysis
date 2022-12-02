@@ -77,6 +77,22 @@ def calc_pf_performance(stock_df, portfolio_amt, running_return_spans, strategie
                         running_portfolio_amt = running_portfolio_amt
                     portfolio_series.append(running_portfolio_amt)
                 stock_df[str(return_span) + ' ' + strat] = portfolio_series
+                
+        if strat == 'Sell_After_Spike':
+            #this needs previous historical data that i appended out in the pickle
+            for return_span in running_return_spans:
+                portfolio_series = []
+                running_portfolio_amt = portfolio_amt
+                for day in range(len(stock_df[return_span])):
+                    if day == 0:
+                        portfolio_series.append(running_portfolio_amt)
+                    else:
+                        if stock_df['daily_return'][day-1]<stock_df[return_span][day]:
+                            running_portfolio_amt = running_portfolio_amt * (1+stock_df['daily_return'][day])
+                        else:
+                            running_portfolio_amt = running_portfolio_amt
+                        portfolio_series.append(running_portfolio_amt)
+                stock_df[str(return_span) + ' ' + strat] = portfolio_series
 
     return stock_df.drop(columns=['index','Adj Close','daily_return',1,2,5,10,20])
 
